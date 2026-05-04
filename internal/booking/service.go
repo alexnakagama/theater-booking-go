@@ -12,13 +12,8 @@ func NewService(store BookingStore) *Service {
 	}
 }
 
-func (s *Service) Book(userID, showID, seatID string) error {
-	booking := Booking{
-		ID:     util.GenerateRandomString(),
-		UserID: userID,
-		ShowID: showID,
-		SeatID: seatID,
-		Status: "booked",
-	}
-	return s.store.Book(booking)
+func (s *Service) Book(b Booking) error {
+	b.ID = util.GenerateRandomString()
+	b.Status = "booked"
+	return s.store.Book(b)
 }

@@ -1,11 +1,14 @@
 package booking
 
+import "time"
+
 type Booking struct {
-	ID     string
-	UserID string
-	ShowID string
-	SeatID string
-	Status string
+	ID        string
+	UserID    string
+	ShowID    string
+	SeatID    string
+	Status    string
+	ExpiresAt time.Time
 }
 
 type BookingStore interface {

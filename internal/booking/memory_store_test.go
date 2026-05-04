@@ -2,13 +2,19 @@ package booking
 
 import (
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 func TestMemoryStore_Book(t *testing.T) {
 	store := NewMemoryStore()
 	service := NewService(store)
 
-	err := service.Book("user1", "show1", "seat1")
+	err := service.Book(Booking{
+		UserID: "user1",
+		ShowID: "show1",
+		SeatID: "seat1",
+	})
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -28,9 +34,32 @@ func TestMemoryStore_ListBookings(t *testing.T) {
 	service := NewService(store)
 
 	// Create multiple bookings for the same show
-	service.Book("user1", "show1", "seat1")
-	service.Book("user2", "show1", "seat2")
-	service.Book("user3", "show2", "seat1")
+	err := service.Book(Booking{
+		UserID: uuid.New().String(),
+		ShowID: "show1",
+		SeatID: "A1",
+	})
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	err2 := service.Book(Booking{
+		UserID: uuid.New().String(),
+		ShowID: "show1",
+		SeatID: "A2",
+	})
+	if err2 != nil {
+		t.Fatalf("expected no error, got %v", err2)
+	}
+
+	err3 := service.Book(Booking{
+		UserID: uuid.New().String(),
+		ShowID: "show2",
+		SeatID: "B1",
+	})
+	if err3 != nil {
+		t.Fatalf("expected no error, got %v", err3)
+	}
 
 	bookings := store.ListBookings("show1")
 	if len(bookings) != 2 {
