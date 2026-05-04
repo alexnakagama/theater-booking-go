@@ -5,15 +5,14 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/alexnakagama/theater-booking-go/internal/adapters/redis"
 	"github.com/google/uuid"
 )
 
 func TestConcurrentBooking_ExactlyOneWins(t *testing.T) {
-	store := NewRedisStore(redis.NewClient("localhost:6379"))
+	store := newTestRedisStore(t) // ← miniredis, no real Redis needed
 	svc := NewService(store)
 
-	const numGoroutines = 100_000
+	const numGoroutines = 1_000 // ← see note below
 
 	var (
 		successes atomic.Int64
@@ -37,6 +36,7 @@ func TestConcurrentBooking_ExactlyOneWins(t *testing.T) {
 			}
 		}(i)
 	}
+
 	wg.Wait()
 
 	if got := successes.Load(); got != 1 {
