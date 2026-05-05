@@ -1,6 +1,14 @@
 package booking
 
-import "time"
+import (
+	"context"
+	"errors"
+	"time"
+)
+
+var (
+	ErrSeatAlreadyBooked = errors.New("seat already booked")
+)
 
 type Booking struct {
 	ID        string
@@ -12,6 +20,9 @@ type Booking struct {
 }
 
 type BookingStore interface {
-	Book(b Booking) error
+	Book(b Booking) (Booking, error)
 	ListBookings(showID string) []Booking
+
+	Confirm(ctx context.Context, sessionID string, userID string) (Booking, error)
+	Release(ctx context.Context, sessionID string, userID string) error
 }
