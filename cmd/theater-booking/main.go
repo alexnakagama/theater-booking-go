@@ -11,6 +11,7 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
+	mux.Handle("GET /", http.FileServer(http.Dir("static")))
 	mux.HandleFunc("GET /shows/", h.ListShowsHandler)
 
 	fmt.Printf("server is running on port: 8080")

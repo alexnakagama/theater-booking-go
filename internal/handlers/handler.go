@@ -13,9 +13,9 @@ type showsResponse struct {
 }
 
 var shows = []showsResponse{
-	{ID: "show1", Name: "The Phantom of the Opera"},
-	{ID: "show2", Name: "Hamilton"},
-	{ID: "show3", Name: "Les Misérables"},
+	{ID: "show1", Name: "The Phantom of the Opera", Rows: 10, SeatsPerRow: 20},
+	{ID: "show2", Name: "Hamilton", Rows: 12, SeatsPerRow: 25},
+	{ID: "show3", Name: "Les Misérables", Rows: 15, SeatsPerRow: 30},
 }
 
 func ListShowsHandler(w http.ResponseWriter, r *http.Request) {
