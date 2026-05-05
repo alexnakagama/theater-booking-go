@@ -9,10 +9,10 @@ import (
 )
 
 func TestConcurrentBooking_ExactlyOneWins(t *testing.T) {
-	store := newTestRedisStore(t) // ← miniredis, no real Redis needed
+	store := newTestRedisStore(t)
 	svc := NewService(store)
 
-	const numGoroutines = 1_000 // ← see note below
+	const numGoroutines = 10_000
 
 	var (
 		successes atomic.Int64
@@ -24,10 +24,10 @@ func TestConcurrentBooking_ExactlyOneWins(t *testing.T) {
 	for i := range numGoroutines {
 		go func(userNum int) {
 			defer wg.Done()
-			err := svc.Book(Booking{
-				UserID: uuid.New().String(),
+			_, err := svc.Book(Booking{
 				ShowID: "screen-1",
 				SeatID: "A1",
+				UserID: uuid.New().String(),
 			})
 			if err == nil {
 				successes.Add(1)
@@ -36,7 +36,6 @@ func TestConcurrentBooking_ExactlyOneWins(t *testing.T) {
 			}
 		}(i)
 	}
-
 	wg.Wait()
 
 	if got := successes.Load(); got != 1 {
