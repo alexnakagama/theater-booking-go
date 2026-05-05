@@ -5,14 +5,14 @@ import (
 	"log"
 	"net/http"
 
-	h "github.com/alexnakagama/theater-booking-go/internal/handlers"
+	"github.com/alexnakagama/theater-booking-go/internal/booking"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
 	mux.Handle("GET /", http.FileServer(http.Dir("static")))
-	mux.HandleFunc("GET /shows/", h.ListShowsHandler)
+	mux.HandleFunc("GET /shows/", booking.ListShowsHandler)
 
 	fmt.Printf("server is running on port: 8080")
 

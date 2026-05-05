@@ -1,4 +1,4 @@
-package handlers
+package booking
 
 import (
 	"encoding/json"
@@ -25,4 +25,8 @@ func ListShowsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(shows)
+}
+
+func ListSeatsHandler(w http.ResponseWriter, r *http.Request) {
+
 }

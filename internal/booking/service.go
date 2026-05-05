@@ -17,3 +17,7 @@ func (s *Service) Book(b Booking) error {
 	b.Status = "booked"
 	return s.store.Book(b)
 }
+
+func (s *Service) ListBookings(showID string) []Booking {
+	return s.store.ListBookings(showID)
+}
